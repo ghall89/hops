@@ -4,7 +4,7 @@ import { brewCheck } from './brew';
 
 const main = async () => {
   // is homebrew installed?
-  const homebrewInstalled = await brewCheck();
+  const homebrewInstalled = brewCheck();
 
   if (!homebrewInstalled) {
     console.log(
@@ -12,6 +12,7 @@ const main = async () => {
         'Homebrew not installed. Visit https://brew.sh for setup instructions.',
       ),
     );
+    return;
   }
 
   await installPackage();
