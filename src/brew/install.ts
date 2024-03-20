@@ -1,17 +1,17 @@
 import ora from 'ora';
 
-// search homebrew for packages that match query
+// install package with homebrew
 export default async (type: string, name: string) => {
-	const { stdout } = Bun.spawn(['brew', 'install', type, name]);
-
 	const spinner = ora(`Installing ${name}...`).start();
 
-	const output = await new Response(stdout).text();
+	try {
+		const { stdout } = Bun.spawn(['brew', 'install', type, name, '--quiet']);
 
-	if (output.includes('ERROR')) {
+		const output = await new Response(stdout).text();
+
+		spinner.succeed(`Successfully installed ${name}!`);
+	} catch {
 		spinner.fail('There was a problem...');
 		process.exit();
 	}
-
-	spinner.succeed(`Successfully installed ${name}!`);
 };
