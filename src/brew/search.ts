@@ -1,19 +1,11 @@
+import { $ } from 'bun';
 import ora from 'ora';
 
 // search homebrew for packages that match query
-export default async (type: string, query: string) => {
-	const { stdout } = Bun.spawn([
-		'brew',
-		'desc',
-		type,
-		'--name',
-		query,
-		'--eval-all',
-	]);
-
+export default async function (type: string, query: string) {
 	const spinner = ora('Searching Homebrew...').start();
 
-	const output = await new Response(stdout).text();
+	const output = await $`brew desc ${type} --name ${query} --eval-all`.text();
 
 	const results = output
 		.split('\n')
@@ -45,4 +37,4 @@ export default async (type: string, query: string) => {
 	);
 
 	return results;
-};
+}

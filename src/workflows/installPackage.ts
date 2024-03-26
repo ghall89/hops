@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { brewSearch, brewInstall } from '../brew';
 
-export default async () => {
+export default async function () {
 	// request search params
 	const { searchType, searchQuery } = await prompts(
 		[
@@ -56,4 +56,4 @@ export default async () => {
 	);
 
 	brewInstall(searchType, installSelection);
-};
+}

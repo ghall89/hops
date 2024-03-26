@@ -2,7 +2,21 @@
 
 ## About
 
-A CLI tool for searching and installing [Homebrew](https://brew.sh) packages. Written in TypeScript, and powered by Bun.
+A CLI tool for installing and managing [Homebrew](https://brew.sh) packages. Written in TypeScript, and powered by Bun. This is not a standalone package manager, and requires Homebrew to be installed on your machine.
+
+## Usage
+
+### Installing Packages
+
+You can search for and install packages by running hops without any flags, or with the `--install` or `-i` flags
+
+### Uninstalling Packages
+
+Coming soon!
+
+### Adding Taps
+
+You can add Homebrew taps with the `--tap` or `-t` flags
 
 ## Building From Source
 

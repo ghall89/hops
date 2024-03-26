@@ -1,18 +1,9 @@
 import chalk from 'chalk';
-import { installPackage } from './workflows';
+import { installPackage, addTap } from './workflows';
 
-// determine if homebrew is installed
-const brewCheck = () => {
-	try {
-		const { stdout } = Bun.spawn(['brew', '-v']);
+main();
 
-		return true;
-	} catch {
-		return false;
-	}
-};
-
-const main = async () => {
+async function main() {
 	// is homebrew installed?
 	const homebrewInstalled = brewCheck();
 
@@ -25,7 +16,33 @@ const main = async () => {
 		process.exit();
 	}
 
-	await installPackage();
-};
+	const arg = Bun.argv[Bun.argv.length - 1];
 
-main();
+	// handle arguments
+	switch (arg) {
+		case '--tap':
+		case '-t':
+			await addTap();
+			break;
+		case '--remove':
+		case '-r':
+			console.log('Removing packages coming soon...');
+			break;
+		case '--install':
+		case '-i':
+		default:
+			await installPackage();
+			break;
+	}
+}
+
+// determine if homebrew is installed
+function brewCheck() {
+	try {
+		const { stdout } = Bun.spawn(['brew', '-v']);
+
+		return true;
+	} catch {
+		return false;
+	}
+}
