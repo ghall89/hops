@@ -1,6 +1,7 @@
 import { $ } from 'bun';
 import ora from 'ora';
 
+// add a homebrew tap
 export default async function (path: string) {
 	const spinner = ora(`Tapping ${path}...`).start();
 

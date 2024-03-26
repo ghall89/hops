@@ -8,15 +8,15 @@ A CLI tool for installing and managing [Homebrew](https://brew.sh) packages. Wri
 
 ### Installing Packages
 
-You can search for and install packages by running hops without any flags, or with the `--install` or `-i` flags
+You can search for and install packages by running hops without any flags, or with the `--add` or `-a` flags
 
 ### Uninstalling Packages
 
-Coming soon!
+You can uninstall Homebrew packages by running hops with the `--remove` or `-r` flags
 
 ### Adding Taps
 
-You can add Homebrew taps with the `--tap` or `-t` flags
+You can add Homebrew taps by running hops with the `--tap` or `-t` flags
 
 ## Building From Source
 
