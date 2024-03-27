@@ -1,6 +1,6 @@
 import { $ } from 'bun';
 import ora from 'ora';
-import listToOptions from '../utils/listToOptions';
+import { listToOptions, checkResults } from '../utils';
 
 import type { Choice } from 'prompts';
 import type { PackageType } from '../types';
@@ -22,13 +22,7 @@ export default async function (type: PackageType): Promise<Choice[]> {
 
 	const results = listToOptions(output);
 
-	if (!results) {
-		spinner.fail('There was a problem...');
-		process.exit();
-	} else if (results.length < 1) {
-		spinner.fail('No packages found.');
-		process.exit();
-	}
+	checkResults(spinner, results);
 
 	spinner.succeed('Packages found!');
 
