@@ -1,3 +1,4 @@
+import { parseArgs } from 'util';
 import chalk from 'chalk';
 import { installPackage, uninstallPackage, addTap } from './workflows';
 
@@ -16,23 +17,35 @@ async function main() {
 		process.exit();
 	}
 
-	const arg = Bun.argv[Bun.argv.length - 1];
+	const { values } = parseArgs({
+		args: Bun.argv,
+		options: {
+			tap: {
+				type: 'boolean',
+			},
+			remove: {
+				type: 'boolean',
+			},
+			add: {
+				type: 'boolean',
+			},
+			zap: {
+				type: 'boolean',
+			},
+		},
+		allowPositionals: true,
+		strict: true,
+	});
 
 	// handle arguments
-	switch (arg) {
-		case '--tap':
-		case '-t':
-			await addTap();
-			break;
-		case '--remove':
-		case '-r':
-			await uninstallPackage();
-			break;
-		case '--add':
-		case '-a':
-		default:
-			await installPackage();
-			break;
+	if (values?.tap) {
+		await addTap();
+	} else if (values?.add) {
+		await installPackage();
+	} else if (values?.remove) {
+		await uninstallPackage(values?.zap);
+	} else {
+		await installPackage();
 	}
 }
 

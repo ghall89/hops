@@ -1,7 +1,7 @@
 import prompts from 'prompts';
 import { brewList, brewUninstall } from '../brew';
 
-export default async function () {
+export default async function (zap: boolean = false) {
 	const { listType } = await prompts(
 		[
 			{
@@ -46,5 +46,5 @@ export default async function () {
 		}
 	);
 
-	await brewUninstall(listType, uninstallSelection);
+	await brewUninstall(listType, uninstallSelection, zap);
 }
