@@ -1,6 +1,11 @@
 import { parseArgs } from 'util';
 import chalk from 'chalk';
-import { installPackage, uninstallPackage, addTap } from './workflows';
+import {
+	installPackage,
+	uninstallPackage,
+	addTap,
+	checkForUpdates,
+} from './workflows';
 
 main();
 
@@ -26,6 +31,9 @@ async function main() {
 			remove: {
 				type: 'boolean',
 			},
+			update: {
+				type: 'boolean',
+			},
 			add: {
 				type: 'boolean',
 			},
@@ -44,6 +52,8 @@ async function main() {
 		await installPackage();
 	} else if (values?.remove) {
 		await uninstallPackage(values?.zap);
+	} else if (values?.update) {
+		checkForUpdates();
 	} else {
 		await installPackage();
 	}

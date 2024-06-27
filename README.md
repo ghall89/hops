@@ -14,6 +14,10 @@ You can search for and install packages by running hops without any flags, or wi
 
 You can uninstall Homebrew packages by running hops with the `--remove` flag. Additionally, when uninstalling casks, you can "zap", or remove all associated files, by including the `--zap` flag.
 
+### Updating Packages
+
+You can add Homebrew taps by running hops with the `--update` flag.
+
 ### Adding Taps
 
 You can add Homebrew taps by running hops with the `--tap` flag.
