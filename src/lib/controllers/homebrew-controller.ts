@@ -1,50 +1,117 @@
 import { $ } from 'bun';
 
+import type { Package, PackageType, Response, Update } from '@/types';
+
 export default class HomebrewController {
-	async list(type: PackageType): Promise<Package[]> {
-		let output: string = '';
+  private listToOptions(input: string): Package[] {
+    const output = input
+      .split('\n')
+      .filter((row: string) => {
+        if (row.length === 0) return false;
+        if (row.includes('==>')) return false;
+        return true;
+      })
+      .map((result: string) => {
+        const splitString = result.split(': ');
 
-		switch (type) {
-			case '--formula':
-				output = await $`brew leaves | xargs brew desc --eval-all`.text();
-				break;
-			case '--cask':
-				output = await $`brew ls --casks | xargs brew desc --eval-all`.text();
-				break;
-		}
+        return {
+          name: splitString[0],
+          description: splitString[1],
+        };
+      });
 
-		const results = this.listToOptions(output);
+    return output;
+  }
 
-		return results;
-	}
+  async search(type: string, query: string): Promise<Choice[]> {
+    const output = await $`brew desc ${type} --name ${query} --eval-all`.text();
 
-	private listToOptions(input: string): Package[] {
-		const output = input
-			.split('\n')
-			.filter((row: string) => {
-				if (row.length === 0) return false;
-				if (row.includes('==>')) return false;
-				return true;
-			})
-			.map((result: string) => {
-				const splitString = result.split(': ');
+    const results = this.listToOptions(output);
 
-				return {
-					name: splitString[0],
-					description: splitString[1],
-				};
-			});
+    return results;
+  }
 
-		return output;
-	}
-}
+  async list(type: PackageType): Promise<Package[]> {
+    let output: string = '';
 
-export interface Package {
-	name: string;
-	description: string;
-}
+    switch (type) {
+      case '--formula':
+        output = await $`brew leaves | xargs brew desc --eval-all`.text();
+        break;
+      case '--cask':
+        output = await $`brew ls --casks | xargs brew desc --eval-all`.text();
+        break;
+    }
 
-export enum PackageType {
-	formula = '--formula',
-	cask = '--cask',
+    const results = this.listToOptions(output);
+
+    return results;
+  }
+
+  async getUpdates(): Promise<Update[]> {
+    const updatesArr: Update[] = [];
+
+    const updates = await $`brew outdated --json=v2`.text();
+
+    const updatesObj: Response = JSON.parse(updates);
+
+    updatesObj.formulae.forEach((formula) =>
+      updatesArr.push({
+        name: formula.name,
+        installed_versions: formula.installed_versions,
+        new_version: formula.current_version,
+        type: 'Formula',
+      }),
+    );
+
+    updatesObj.casks.forEach((cask) =>
+      updatesArr.push({
+        name: cask.name,
+        installed_versions: cask.installed_versions,
+        new_version: cask.current_version,
+        type: 'Cask',
+      }),
+    );
+
+    return updatesArr;
+  }
+
+  async tap(path: string) {
+    try {
+      await $`brew tap ${path}`.text();
+
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
+  }
+
+  async install(type: PackageType, name: string) {
+    try {
+      await $`brew install ${type} ${name} --quiet`.text();
+
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
+  }
+
+  async uninstall(type: PackageType, name: string, zap: boolean = false) {
+    try {
+      await $`brew uninstall ${type} ${zap ? '--zap' : ''} ${name} --quiet`.text();
+
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
+  }
+
+  async update(packages: string[]) {
+    try {
+      await $`brew upgrade ${packages.join(' ')}`.text();
+      return { success: true };
+    } catch {
+      return { success: false };
+    }
+  }
 }
