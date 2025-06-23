@@ -1,5 +1,8 @@
 import { Box, Text, useStdout, useInput } from 'ink';
 
+import HomebrewProvider from './lib/providers/homebrew-provider';
+import InstalledList from './components/installed-list';
+
 export default function App() {
 	const { stdout } = useStdout();
 
@@ -10,8 +13,10 @@ export default function App() {
 	});
 
 	return (
-		<Box height={stdout.rows} width={stdout.columns} borderStyle="round">
-			<Text>Hello world!</Text>
-		</Box>
+		<HomebrewProvider>
+			<Box height={stdout.rows - 1} width={stdout.columns}>
+				<InstalledList />
+			</Box>
+		</HomebrewProvider>
 	);
 }
