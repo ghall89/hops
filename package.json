@@ -1,37 +1,40 @@
 {
-	"name": "hops",
-	"version": "0.1.0",
-	"module": "src/main.ts",
-	"type": "module",
-	"scripts": {
-		"dev": "bun run src/main.tsx",
-		"build": "bun build src/main.tsx --outfile build/hops --compile --external --minify --target bun",
-		"lint": "eslint"
-	},
-	"devDependencies": {
-		"@babel/preset-react": "^7.27.1",
-		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
-		"@types/bun": "^1.2.17",
-		"@types/prompts": "^2.4.9",
-		"@types/react": "^19.1.8",
-		"bun-types": "latest",
-		"eslint": "8^",
-		"eslint-plugin-prettier": "^5.5.0",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^5.2.0",
-		"prettier": "^3.2.5",
-		"typescript-eslint": "^7.2.0"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0"
-	},
-	"dependencies": {
-		"ink": "^6.0.0",
-		"ink-select-input": "^6.2.0",
-		"ink-spinner": "^5.0.0",
-		"ink-text-input": "^6.0.0",
-		"react": "^19.1.0",
-		"react-devtools-core": "^6.1.2",
-		"zustand": "^5.0.5"
-	}
+  "name": "hops",
+  "version": "0.1.0",
+  "module": "src/main.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/main.tsx",
+    "build": "bun build src/main.tsx --outfile build/hops --compile --external --minify --target bun",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@types/bun": "^1.2.17",
+    "@types/prompts": "^2.4.9",
+    "@types/react": "^19.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
+    "bun-types": "latest",
+    "eslint": "^8",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.6.0",
+    "typescript-eslint": "^7.2.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "ink": "^6.0.0",
+    "ink-select-input": "^6.2.0",
+    "ink-spinner": "^5.0.0",
+    "ink-text-input": "^6.0.0",
+    "react": "^19.1.0",
+    "react-devtools-core": "^6.1.2",
+    "zustand": "^5.0.5"
+  }
 }

@@ -1,14 +1,12 @@
 import { Box, Text, useFocus } from 'ink';
 import Spinner from 'ink-spinner';
 import { useMemo } from 'react';
-import { create } from 'zustand';
 
 import { useHomebrew } from '@/lib/providers/homebrew-provider';
 
 import ScrollingList from './ui/scrolling-list';
 
 export default function InstalledList() {
-  const { isFocused } = useFocus();
   const { installedCasks, loading } = useHomebrew();
 
   if (loading) {
