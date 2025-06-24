@@ -1,4 +1,5 @@
 import { Box, Text, useFocus } from 'ink';
+import Spinner from 'ink-spinner';
 import { useMemo } from 'react';
 import { create } from 'zustand';
 
@@ -8,19 +9,24 @@ import ScrollingList from './ui/scrolling-list';
 
 export default function InstalledList() {
   const { isFocused } = useFocus();
-  const { store } = useHomebrew();
+  const { installedCasks, loading } = useHomebrew();
 
-  if (store?.loading) {
-    return <Text>Loading...</Text>;
+  if (loading) {
+    return (
+      <Box flexDirection="row">
+        <Spinner />
+        <Text>Loading...</Text>
+      </Box>
+    );
   }
 
   const listMemo = useMemo(
     () =>
-      store?.installedCasks.map(({ name, description }) => ({
+      installedCasks.map(({ name, description }) => ({
         text: name,
         description,
       })),
-    [store],
+    [installedCasks],
   );
 
   return (

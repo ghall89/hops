@@ -1,56 +1,64 @@
-import { useContext, createContext, useEffect } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { create } from 'zustand';
 
+import type { Package } from '@/types';
+import { PackageType } from '@/types';
+
 import HomebrewController from '../controllers/homebrew-controller';
-import { Package, PackageType } from '../controllers/homebrew-controller';
 
 const HomebrewContext = createContext<{
-	brew: HomebrewController | null;
-	store: HomebrewStore | null;
+  installedCasks: Package[];
+  installedFormulae: Package[];
+  loading: boolean;
 }>({
-	brew: null,
-	store: null,
+  installedCasks: [],
+  installedFormulae: [],
+  loading: false,
 });
 
 export function useHomebrew() {
-	return useContext(HomebrewContext);
+  return useContext(HomebrewContext);
 }
 
 interface HomebrewStore {
-	installedFormulae: Package[];
-	installedCasks: Package[];
-	loading: false;
-	setInstalledPackages: (f: Package[], c: Package[]) => void;
+  installedFormulae: Package[];
+  installedCasks: Package[];
+  loading: false;
+  setInstalledPackages: () => void;
 }
 
 const useHomebrewStore = create<HomebrewStore>((set) => ({
-	installedFormulae: [],
-	installedCasks: [],
-	loading: false,
-	setInstalledPackages: (formulae: Package[], casks: Package[]) => {
-		set({ installedFormulae: formulae, installedCasks: casks });
-	},
+  installedFormulae: [],
+  installedCasks: [],
+  loading: false,
+  setInstalledPackages: async () => {
+    const brew = new HomebrewController();
+
+    const formulae = await brew.list(PackageType.formula);
+    const casks = await brew.list(PackageType.cask);
+
+    set({ installedFormulae: formulae, installedCasks: casks });
+  },
 }));
 
 interface HomebrewProviderProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 export default function HomebrewProvider({ children }: HomebrewProviderProps) {
-	const brew = new HomebrewController();
-	const store = useHomebrewStore();
+  const { installedCasks, installedFormulae, loading, setInstalledPackages } =
+    useHomebrewStore();
 
-	useEffect(async () => {
-		const formulae = await brew.list(PackageType.formula);
-		const cask = await brew.list(PackageType.cask);
+  useEffect(() => {
+    setInstalledPackages();
+  }, []);
 
-		store.setInstalledPackages(cask, formulae);
-	}, []);
-
-	return (
-		<HomebrewContext.Provider value={{ brew, store }}>
-			{children}
-		</HomebrewContext.Provider>
-	);
+  return (
+    <HomebrewContext.Provider
+      value={{ installedCasks, installedFormulae, loading }}
+    >
+      {children}
+    </HomebrewContext.Provider>
+  );
 }

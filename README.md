@@ -2,25 +2,7 @@
 
 ## About
 
-A CLI tool for installing and managing [Homebrew](https://brew.sh) packages. Written in TypeScript, and powered by Bun. This is not a standalone package manager, and requires Homebrew to be installed on your machine.
-
-## Usage
-
-### Installing Packages
-
-You can search for and install packages by running hops without any flags, or with the `--add` flag.
-
-### Uninstalling Packages
-
-You can uninstall Homebrew packages by running hops with the `--remove` flag. Additionally, when uninstalling casks, you can "zap", or remove all associated files, by including the `--zap` flag.
-
-### Updating Packages
-
-You can add Homebrew taps by running hops with the `--update` flag.
-
-### Adding Taps
-
-You can add Homebrew taps by running hops with the `--tap` flag.
+A TUI application for installing and managing [Homebrew](https://brew.sh) packages. Written in TypeScript, and powered by Bun. This is not a standalone package manager, and requires Homebrew to be installed on your machine.
 
 ## Building From Source
 
@@ -30,6 +12,5 @@ From the project directory, run `bun run build`. This will create a `/build` dir
 
 ## Dependencies
 
-- [prompts](https://github.com/terkelg/prompts)
-- [ora](https://github.com/sindresorhus/ora)
-- [chalk](https://github.com/chalk/chalk)
+- [ink](https://github.com/vadimdemedes/ink)
+- [zustand](https://github.com/pmndrs/zustand)

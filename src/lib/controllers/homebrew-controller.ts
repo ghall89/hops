@@ -23,7 +23,7 @@ export default class HomebrewController {
     return output;
   }
 
-  async search(type: string, query: string): Promise<Choice[]> {
+  async search(type: string, query: string): Promise<Package[]> {
     const output = await $`brew desc ${type} --name ${query} --eval-all`.text();
 
     const results = this.listToOptions(output);
