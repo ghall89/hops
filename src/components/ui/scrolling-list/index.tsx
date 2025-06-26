@@ -50,6 +50,7 @@ export default function ScrollingList<T>({
   }, [items.length, boxHeight, selectedIndex]);
 
   useEffect(() => {
+    // @ts-expect-error - Argument of type 'null' is not assignable to parameter of type 'DOMElement'.
     const { height } = measureElement(boxRef.current);
     setBoxHeight(height);
   }, []);
