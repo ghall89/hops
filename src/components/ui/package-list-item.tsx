@@ -1,23 +1,23 @@
-import { Text, useInput } from 'ink';
+import { Text } from 'ink';
 
-interface ListItemProps {
-  label: string;
+export interface PackageListItemProps {
+  name: string;
   description?: string;
-  isSelected: boolean;
+  isSelected?: boolean;
 }
 
-export default function ListItem({
-  label,
+export default function PackageListItem({
+  name,
   description,
   isSelected,
-}: ListItemProps) {
+}: PackageListItemProps) {
   return (
     <Text
       wrap="truncate-end"
       bold={isSelected}
       color={isSelected ? 'blueBright' : undefined}
     >
-      {isSelected ? '►' : '•'} {label}{' '}
+      {isSelected ? '►' : '•'} {name}{' '}
       {isSelected && description && `- ${description}`}
     </Text>
   );

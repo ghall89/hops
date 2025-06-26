@@ -1,15 +1,19 @@
 import { Box, measureElement, useInput } from 'ink';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-import ListItem from './list-item';
 import ScrollBar from './scroll-bar';
 
-interface ScrollingListProps {
+interface ScrollingListProps<T> {
   isActive: boolean;
-  items: { text: string; description: string }[];
+  renderItem: (props: T) => React.ReactNode;
+  items: T[];
 }
 
-export default function ScrollingList({ isActive, items }: ScrollingListProps) {
+export default function ScrollingList<T>({
+  isActive,
+  renderItem: RenderItem,
+  items,
+}: ScrollingListProps<T>) {
   const boxRef = useRef(null);
 
   const [offset, setOffset] = useState(0);
@@ -65,12 +69,11 @@ export default function ScrollingList({ isActive, items }: ScrollingListProps) {
       justifyContent="space-between"
     >
       <Box flexDirection="column" ref={boxRef} height="100%">
-        {visibleRowsMemo.map((item) => (
-          <ListItem
-            key={item.text}
-            label={item.text}
-            description={item?.description}
-            isSelected={items[selectedIndex] === item}
+        {visibleRowsMemo.map((props, index) => (
+          <RenderItem
+            key={index}
+            isSelected={items[selectedIndex] === props}
+            {...props}
           />
         ))}
       </Box>

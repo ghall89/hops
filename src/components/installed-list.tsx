@@ -1,35 +1,35 @@
-import { Box, Text, useFocus } from 'ink';
+import { Box } from 'ink';
 import Spinner from 'ink-spinner';
 import { useMemo } from 'react';
 
-import { useHomebrew } from '@/lib/providers/homebrew-provider';
+import { useHomebrewStore } from '@/lib/stores/homebrew';
 
+import PackageListItem, {
+  type PackageListItemProps,
+} from './ui/package-list-item';
 import ScrollingList from './ui/scrolling-list';
 
 export default function InstalledList() {
-  const { installedCasks, loading } = useHomebrew();
+  const { installedCasks, loading } = useHomebrewStore();
 
-  if (loading) {
-    return (
-      <Box flexDirection="row">
-        <Spinner />
-        <Text>Loading...</Text>
-      </Box>
-    );
-  }
-
-  const listMemo = useMemo(
+  const listMemo = useMemo<PackageListItemProps[]>(
     () =>
       installedCasks.map(({ name, description }) => ({
-        text: name,
+        name,
         description,
       })),
     [installedCasks],
   );
 
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <Box flexDirection="row">
-      <ScrollingList isActive items={listMemo ?? []} />
+      <ScrollingList
+        isActive
+        renderItem={PackageListItem}
+        items={listMemo ?? []}
+      />
     </Box>
   );
 }
